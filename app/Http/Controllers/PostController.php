@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         //
         // return "shantanu";
-        $posts = Post::all();
+        $posts = Post::orderBy('id','desc')->paginate(2);
         return view('posts.index')->withPosts($posts);
     }
 
@@ -84,6 +84,9 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $posts = Post::find($id);
+
+        return view('posts.edit')->withPost($posts);
     }
 
     /**
@@ -96,6 +99,27 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, array(
+                'title' => 'required|max:255',
+                'body'  => 'required'
+            ));
+
+        $posts = Post::find($id);
+        $posts->title = $request->input('title');
+        $posts->body = $request->input('body');
+        $posts->save();
+
+        Session::flash('success','The blog post is successfully updated!');
+
+        return view('posts.show')->withPost($posts);
+
+
+
+
+
+
+
+
     }
 
     /**
@@ -107,5 +131,12 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::find($id)->delete();
+
+
+        Session::flash('success','The blog post is successfully Deleted!');
+
+        return redirect()->route('posts.index');
+
     }
 }
