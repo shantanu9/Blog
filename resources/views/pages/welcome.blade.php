@@ -16,35 +16,16 @@
 
     <div class="row">
       <div class="col-md-8">
-        <div class="Post">
-          <h3>Post Title</h3>
-          <p>mdvkmsdv
-          dsvkdmvksf
-          sdvmksmb</p>
-          <a href="#" class="btn btn-primary">Read more</a>
-        </div>
-        <hr>
+        @foreach ($posts as $post)
 
-        <div class="Post">
-          <h3>Post Title</h3>
-          <p>mdvkmsdv
-          dsvkdmvksf
-          sdvmksmb</p>
-          <a href="#" class="btn btn-primary">Read more</a>
-        </div>
-        <hr>
+          <div class="Post">
+              <h3>{{ substr($post->title, 0,10) }}{{ strlen($post->title) > 10 ? "...":"" }}</h3>
+              <p> {{ substr($post->body, 0,10) }}{{ strlen($post->body) > 10 ? "...":"" }}</p>
+              <a href="#" class="btn btn-primary">Read more</a>
+          </div>
 
-        <div class="Post">
-          <h3>Post Title</h3>
-          <p>mdvkmsdv
-          dsvkdmvksf
-          sdvmksmb</p>
-          <a href="#" class="btn btn-primary">Read more</a>
-        </div>
-        <hr>
-
+        @endforeach
       </div>
-
 
       <div class="col-md-3 col-md-offst-1">
         <h2>Sidebar</h2>
