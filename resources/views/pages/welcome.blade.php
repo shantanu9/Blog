@@ -19,9 +19,9 @@
         @foreach ($posts as $post)
 
           <div class="Post">
-              <h3>{{ substr($post->title, 0,10) }}{{ strlen($post->title) > 10 ? "...":"" }}</h3>
-              <p> {{ substr($post->body, 0,10) }}{{ strlen($post->body) > 10 ? "...":"" }}</p>
-              <a href="#" class="btn btn-primary">Read more</a>
+              <h3>{{ substr($post->title, 0,300) }}{{ strlen($post->title) > 300 ? "...":"" }}</h3>
+              <p> {{ substr($post->body, 0,300) }}{{ strlen($post->body) > 300 ? "...":"" }}</p>
+              <a href="{{ url('blog/'.$post->slug)}}" class="btn btn-primary">Read more</a>
           </div>
 
         @endforeach

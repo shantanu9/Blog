@@ -15,9 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-        // return "shantanu";
-        $posts = Post::orderBy('id','desc')->paginate(2);
+
+        $posts = Post::orderBy('id','desc')->paginate(4);
         return view('posts.index')->withPosts($posts);
     }
 
@@ -44,6 +43,7 @@ class PostController extends Controller
         //validate the data
         $this->validate($request, array(
                 'title' => 'required|max:255',
+                'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
                 'body'  => 'required'
             ));
 
@@ -51,6 +51,7 @@ class PostController extends Controller
 
         $post = new Post;
         $post->body  = $request->body;
+        $post->slug  = $request->slug;
         $post->title = $request->title;
         $post->save();
 
@@ -98,28 +99,33 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+
+        if($request->input('slug') == $post->slug ){
         $this->validate($request, array(
                 'title' => 'required|max:255',
                 'body'  => 'required'
             ));
+          }else {
+            $this->validate($request, array(
+                    'title' => 'required|max:255',
+                    'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug',
+                    'body'  => 'required'
+                ));
+            # code...
+          }
 
         $posts = Post::find($id);
+
         $posts->title = $request->input('title');
+        $posts->slug  = $request->input('slug');
         $posts->body = $request->input('body');
+
         $posts->save();
 
         Session::flash('success','The blog post is successfully updated!');
 
         return view('posts.show')->withPost($posts);
-
-
-
-
-
-
-
-
     }
 
     /**
